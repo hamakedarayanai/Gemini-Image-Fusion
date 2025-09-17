@@ -1,0 +1,5 @@
+{
+  "name": "Gemini Image Fusion",
+  "description": "An application that uses AI to fuse concepts from multiple uploaded images and a text prompt into a single, new creation. Upload images, describe your vision, and let the AI generate a unique visual blend.",
+  "requestFramePermissions": []
+}
