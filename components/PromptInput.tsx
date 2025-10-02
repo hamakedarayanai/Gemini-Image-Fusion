@@ -3,7 +3,6 @@ import PromptSuggestions from './PromptSuggestions';
 
 interface PromptInputProps {
   prompt: string;
-  // FIX: Updated the type for `setPrompt` to allow functional updates, as the original type `(prompt: string) => void` only allowed passing a string value.
   setPrompt: React.Dispatch<React.SetStateAction<string>>;
 }
 

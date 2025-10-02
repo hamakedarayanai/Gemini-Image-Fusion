@@ -68,7 +68,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ files, setFiles }) => {
       {files.length > 0 && (
         <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {files.map((file, index) => (
-            <div key={index} className="relative group aspect-square">
+            <div key={index} className="relative group aspect-square animate-scale-in">
               <img src={URL.createObjectURL(file)} alt={file.name} className="w-full h-full object-cover rounded-md" />
               <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center">
                 <button

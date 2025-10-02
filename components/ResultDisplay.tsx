@@ -2,25 +2,33 @@ import React, { useState } from 'react';
 import type { GeneratedResult } from '../types';
 import Modal from './Modal';
 import DownloadIcon from './icons/DownloadIcon';
+import ClipboardIcon from './icons/ClipboardIcon';
 
 interface ResultDisplayProps {
   result: GeneratedResult;
+  prompt: string;
 }
 
-const ResultDisplay: React.FC<ResultDisplayProps> = ({ result }) => {
+const ResultDisplay: React.FC<ResultDisplayProps> = ({ result, prompt }) => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const handleDownload = () => {
     if (!result.imageUrl) return;
     const link = document.createElement('a');
     link.href = result.imageUrl;
-    // Extract file extension from mime type
     const mimeType = result.imageUrl.split(';')[0].split(':')[1];
     const extension = mimeType ? mimeType.split('/')[1] : 'png';
     link.download = `gemini-fused-image.${extension}`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const handleCopyPrompt = () => {
+    navigator.clipboard.writeText(prompt);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -52,9 +60,26 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ result }) => {
           </div>
         )}
         {result.text && (
-          <p className="w-full max-w-lg text-center text-gray-300 bg-gray-900/70 p-4 rounded-lg border border-gray-700">
-            {result.text}
-          </p>
+          <div className="w-full max-w-lg text-left text-gray-300 bg-gray-900/70 p-4 rounded-lg border border-gray-700 relative">
+             <p className="text-sm font-semibold text-gray-400 mb-2">AI's Description:</p>
+            <p>{result.text}</p>
+          </div>
+        )}
+         {prompt && (
+            <div className="w-full max-w-lg text-left text-gray-400 bg-gray-800/50 p-3 rounded-lg border border-gray-700">
+                <p className="text-sm font-semibold text-gray-500 mb-1">Original Prompt:</p>
+                <div className="flex justify-between items-start gap-2">
+                    <p className="italic text-gray-300">{prompt}</p>
+                    <button 
+                        onClick={handleCopyPrompt}
+                        className="flex-shrink-0 p-1.5 text-gray-400 hover:text-cyan-400 hover:bg-gray-700 rounded-md transition-all"
+                        aria-label="Copy prompt"
+                    >
+                        <ClipboardIcon className="w-5 h-5"/>
+                    </button>
+                </div>
+                 {copied && <p className="text-cyan-400 text-xs mt-2 text-right animate-fade-in-fast">Copied!</p>}
+            </div>
         )}
       </div>
 
